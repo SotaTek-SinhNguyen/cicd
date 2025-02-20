@@ -1,0 +1,30 @@
+name: Angular CI/CD on Windows
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.11.1
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Angular
+        run: ng build
+
+      - name: Deploy to fake folder
+        run: |
+          New-Item -ItemType Directory -Path C:\Users\admin\Desktop\build -Force
+          Copy-Item -Path dist\your-angular-project\* -Destination C:\Users\admin\Desktop\build -Recurse -Force
